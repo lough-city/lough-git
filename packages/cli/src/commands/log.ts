@@ -1,8 +1,12 @@
 import execa from 'execa';
+import { GIT_LOG_FORMAT_FIELD } from '../constants/log';
 
 const action = async () => {
-  const values = execa.commandSync('git log');
-  console.log(values);
+  const { stdout } = execa.commandSync(`git log --format="${JSON.stringify(GIT_LOG_FORMAT_FIELD)}"`);
+
+  // const log = JSON.parse(stdout)
+  // Record<keyof typeof GIT_LOG_FORMAT_FIELD, string>
+  console.log(stdout);
 };
 
 export default {
