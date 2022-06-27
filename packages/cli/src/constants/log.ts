@@ -83,6 +83,11 @@ export enum GIT_LOG_FORMAT_FIELD {
   committerDateTimestamp = '%ct',
 
   /**
+   * ref names, like the --decorate option of git-log[1]
+   */
+  decorate = '%d',
+
+  /**
    * encoding
    */
   encoding = '%e',
