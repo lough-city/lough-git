@@ -16,6 +16,7 @@ export enum GIT_LOG_FORMAT_FIELD {
    * tree hash
    */
   treeHash = '%T',
+
   /**
    * abbreviated tree hash
    */
@@ -79,5 +80,30 @@ export enum GIT_LOG_FORMAT_FIELD {
   /**
    * committer date, UNIX timestamp
    */
-  committerDateTimestamp = '%ct'
+  committerDateTimestamp = '%ct',
+
+  /**
+   * encoding
+   */
+  encoding = '%e',
+
+  /**
+   * subject
+   */
+  subject = '%s',
+
+  /**
+   * sanitized subject line, suitable for a filename
+   */
+  sanitizedSubject = '%f',
+
+  /**
+   * body
+   */
+  body = '%b',
+
+  /**
+   * commit notes
+   */
+  notes = '%N'
 }
