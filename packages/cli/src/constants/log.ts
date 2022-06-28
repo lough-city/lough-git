@@ -95,7 +95,7 @@ export enum GIT_LOG_FORMAT_FIELD {
   /**
    * subject
    */
-  subject = '%s',
+  originSubject = '%s',
 
   /**
    * sanitized subject line, suitable for a filename

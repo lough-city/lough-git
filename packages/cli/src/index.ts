@@ -15,4 +15,8 @@ function start() {
   program.parseAsync(process.argv);
 }
 
+// log 输出后 将进行
+// 判断当前版本 对比 commit tag版本
+// CHANGELOG.md
+
 start();
