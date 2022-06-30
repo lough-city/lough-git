@@ -1,10 +1,8 @@
+import NpmOperate from '@lough/npm-operate';
 import execa from 'execa';
-import fs from 'fs';
-import lough from '../config/lough';
+import path from 'path';
 import { GIT_LOG_FORMAT_FIELD } from '../constants/log';
-import { PACKAGE_MANAGE_TOOL } from '../constants/npm';
 import { GitLog } from '../typings/log';
-import { getPackageManageTool } from '../utils/npm';
 
 /**
  * 读取 package.json 获取生成所需配置
@@ -15,45 +13,84 @@ import { getPackageManageTool } from '../utils/npm';
  * 非 lerna 包无需判断是否是当前包的提交
  */
 
+// log 输出后 将进行
+// 判断当前版本 对比 commit tag版本
+// CHANGELOG.md
+
 const action = async () => {
-  console.log(111111, process.cwd(), __dirname);
-  return;
+  const projectPath = path.join('E:', 'City', 'lyrical', 'lyrical');
 
-  const packageManageTool = getPackageManageTool();
+  const npmOperate = new NpmOperate({ rootPath: projectPath });
 
-  lough.packageManageTool = packageManageTool as PACKAGE_MANAGE_TOOL;
-  if (fs.existsSync(`${process.cwd()}/lerna.json`)) lough.isMorePackage = true;
+  // TODO: 指定版本 指定lerna项目 指定
 
-  const { stdout } = execa.commandSync(`git log --date=iso --format=${JSON.stringify(GIT_LOG_FORMAT_FIELD)},`);
+  for (const packageName of Object.keys(npmOperate.packages)) {
+    const { dirName, relativeDir } = npmOperate.packages[packageName];
 
-  const logList: Array<GitLog> = JSON.parse(
-    `[${stdout
-      .substring(0, stdout.length - 1)
-      .replace(/"[^"]*":"[^"]*(\n)[^"]*"/g, ($0, $1) => $0.replace(/\n"/g, '\\n"'))}]`
-  );
+    const tags = execa
+      .commandSync('git tag', { cwd: projectPath })
+      .stdout.split('\n')
+      .filter(v => v.includes(packageName));
 
-  logList.forEach(log => {
-    if (!log.originSubject) return;
+    const { stdout } = execa.commandSync(
+      `git log --date=iso --format=${JSON.stringify(GIT_LOG_FORMAT_FIELD)}, ${tags[tags.length - 1]}...${
+        tags[tags.length - 2]
+      } -- ${relativeDir}/${dirName} `,
+      {
+        cwd: projectPath
+      }
+    );
 
-    const result = /^([a-z]*)(?:\(([^)]*)\))?: (.*)$/.exec(log.originSubject);
-    if (!result) return;
+    const logList: Array<GitLog> = JSON.parse(
+      `[${stdout
+        .substring(0, stdout.length - 1)
+        .replace(/"[^"]*":"[^"]*(\n)[^"]*"/g, ($0, $1) => $0.replace(/\n/g, '\\n'))}]`
+    );
 
-    const [_originSubject, type, scope, subject] = result;
+    console.log(packageName, logList);
 
-    log.type = type || '';
-    log.scope = scope || '';
-    log.subject = subject || '';
-  });
+    break;
+  }
 
-  const logGroupByType = logList.reduce((prev, current) => {
-    if (!prev[current.type]) prev[current.type] = [];
+  // const { stdout } = execa.commandSync(
+  //   `git log --date=iso --format=${JSON.stringify(
+  //     GIT_LOG_FORMAT_FIELD
+  //   )}, @lyrical/http@0.0.8...@lyrical/http@0.0.7 -- packages/http `,
+  //   {
+  //     cwd: projectPath
+  //   }
+  // );
 
-    prev[current.type].push(current);
+  // const logList: Array<GitLog> = JSON.parse(
+  //   `[${stdout
+  //     .substring(0, stdout.length - 1)
+  //     .replace(/"[^"]*":"[^"]*(\n)[^"]*"/g, ($0, $1) => $0.replace(/\n/g, '\\n'))}]`
+  // );
 
-    return prev;
-  }, {});
+  // logList.forEach(log => {
+  //   if (!log.originSubject) return;
 
-  console.log(1111111111, logGroupByType);
+  //   const result = /^([a-z]*)(?:\(([^)]*)\))?: (.*)$/.exec(log.originSubject);
+  //   if (!result) return;
+
+  //   const [_originSubject, type, scope, subject] = result;
+
+  //   log.type = type || '';
+  //   log.scope = scope || '';
+  //   log.subject = subject || '';
+  // });
+
+  // console.log(logList);
+
+  // const logGroupByType = logList.reduce((prev, current) => {
+  //   if (!prev[current.type]) prev[current.type] = [];
+
+  //   prev[current.type].push(current);
+
+  //   return prev;
+  // }, {});
+
+  // console.log(1111111111, logGroupByType);
 };
 
 export default {
