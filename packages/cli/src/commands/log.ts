@@ -18,7 +18,7 @@ import { GitLog } from '../typings/log';
 // CHANGELOG.md
 
 const action = async () => {
-  const projectPath = path.join('E:', 'City', 'lyrical', 'lyrical');
+  const projectPath = path.join('E:', 'City', 'lyrical');
 
   const npmOperate = new NpmOperate({ rootPath: projectPath });
 

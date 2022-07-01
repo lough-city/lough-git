@@ -1,0 +1,29 @@
+{
+  "name": "@lough/git-operate",
+  "version": "0.0.0",
+  "description": "lough git operate.",
+  "author": "City <city@nanzc.com>",
+  "main": "lib/index.js",
+  "license": "MIT",
+  "keywords": [
+    "git",
+    "node"
+  ],
+  "files": [
+    "lib"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/AnCIity/lough-git.git"
+  },
+  "homepage": "https://github.com/AnCIity/lough-git",
+  "bugs": {
+    "url": "https://github.com/AnCIity/lough-git/issues"
+  },
+  "scripts": {
+    "build": "tsc"
+  },
+  "dependencies": {
+    "execa": "5.1.1"
+  }
+}
