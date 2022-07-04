@@ -4,6 +4,8 @@
   "description": "lough git operate.",
   "author": "City <city@nanzc.com>",
   "main": "lib/index.js",
+  "types": "lib/index.d.ts",
+  "typings": "lib/index.d.ts",
   "license": "MIT",
   "keywords": [
     "git",

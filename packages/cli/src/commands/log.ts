@@ -1,8 +1,6 @@
 import NpmOperate from '@lough/npm-operate';
-import execa from 'execa';
+import GitOperate from '@lough/git-operate';
 import path from 'path';
-import { GIT_LOG_FORMAT_FIELD } from '../constants/log';
-import { GitLog } from '../typings/log';
 
 /**
  * 读取 package.json 获取生成所需配置
@@ -17,80 +15,122 @@ import { GitLog } from '../typings/log';
 // 判断当前版本 对比 commit tag版本
 // CHANGELOG.md
 
+/**
+ * 工程化
+ */
+const ENGINEERING = {
+  /**
+   * 构建过程或辅助工具的变动
+   */
+  chore: 'chore',
+  /**
+   * 与 CI（持续集成服务）有关的改动
+   */
+  ci: 'ci',
+  /**
+   * 代码风格修改
+   */
+  style: 'style',
+  /**
+   * 文档
+   */
+  docs: 'docs',
+  /**
+   * 测试
+   */
+  test: 'test'
+};
+
+/**
+ * 版本发布
+ */
+const RELEASE = {
+  /**
+   * 编译相关的修改，例如版本发布、对项目构建或者依赖的改动
+   */
+  build: 'build',
+  /**
+   * 发布
+   */
+  release: 'release'
+};
+
+/**
+ * 功能
+ */
+const FEATURE = {
+  /**
+   * 新功能、新特性
+   */
+  feat: 'feat',
+  /**
+   * 页面布局与样式
+   */
+  ui: 'ui',
+  /**
+   * 重构
+   */
+  refactor: 'refactor',
+  /**
+   * 优化相关，比如：提升性能、体验
+   */
+  perf: 'perf'
+};
+
+/**
+ * BUG 修复
+ */
+const BUG_FIX = {
+  /**
+   * 修补BUG
+   */
+  fix: 'fix'
+};
+
 const action = async () => {
-  const projectPath = path.join('E:', 'City', 'lyrical');
+  const projectPath = path.join('W:', 'City', 'lyrical', 'lyrical');
 
-  const npmOperate = new NpmOperate({ rootPath: projectPath });
+  const npm = new NpmOperate({ rootPath: projectPath });
 
-  // TODO: 指定版本 指定lerna项目 指定
+  const git = new GitOperate({ rootPath: projectPath });
 
-  for (const packageName of Object.keys(npmOperate.packages)) {
-    const { dirName, relativeDir } = npmOperate.packages[packageName];
+  if (!npm.isLernaProject) {
+    //  TODO: 按照标签分组
+    // git.tag
 
-    const tags = execa
-      .commandSync('git tag', { cwd: projectPath })
-      .stdout.split('\n')
-      .filter(v => v.includes(packageName));
+    const logList = git.log();
 
-    const { stdout } = execa.commandSync(
-      `git log --date=iso --format=${JSON.stringify(GIT_LOG_FORMAT_FIELD)}, ${tags[tags.length - 1]}...${
-        tags[tags.length - 2]
-      } -- ${relativeDir}/${dirName} `,
-      {
-        cwd: projectPath
-      }
-    );
-
-    const logList: Array<GitLog> = JSON.parse(
-      `[${stdout
-        .substring(0, stdout.length - 1)
-        .replace(/"[^"]*":"[^"]*(\n)[^"]*"/g, ($0, $1) => $0.replace(/\n/g, '\\n'))}]`
-    );
-
-    console.log(packageName, logList);
-
-    break;
+    // 用户日志 开发日志
+    // render markdown
   }
 
-  // const { stdout } = execa.commandSync(
-  //   `git log --date=iso --format=${JSON.stringify(
-  //     GIT_LOG_FORMAT_FIELD
-  //   )}, @lyrical/http@0.0.8...@lyrical/http@0.0.7 -- packages/http `,
-  //   {
-  //     cwd: projectPath
-  //   }
-  // );
+  // for (const packageName of Object.keys(npmOperate.packages)) {
+  //   const { dirName, relativeDir } = npmOperate.packages[packageName];
 
-  // const logList: Array<GitLog> = JSON.parse(
-  //   `[${stdout
-  //     .substring(0, stdout.length - 1)
-  //     .replace(/"[^"]*":"[^"]*(\n)[^"]*"/g, ($0, $1) => $0.replace(/\n/g, '\\n'))}]`
-  // );
+  //   const tags = execa
+  //     .commandSync('git tag', { cwd: projectPath })
+  //     .stdout.split('\n')
+  //     .filter(v => v.includes(packageName));
 
-  // logList.forEach(log => {
-  //   if (!log.originSubject) return;
+  //   const { stdout } = execa.commandSync(
+  //     `git log --date=iso --format=${JSON.stringify(GIT_LOG_FORMAT_FIELD)}, ${tags[tags.length - 1]}...${
+  //       tags[tags.length - 2]
+  //     } -- ${relativeDir}/${dirName} `,
+  //     {
+  //       cwd: projectPath
+  //     }
+  //   );
 
-  //   const result = /^([a-z]*)(?:\(([^)]*)\))?: (.*)$/.exec(log.originSubject);
-  //   if (!result) return;
+  //   const logList: Array<GitLog> = JSON.parse(
+  //     `[${stdout
+  //       .substring(0, stdout.length - 1)
+  //       .replace(/"[^"]*":"[^"]*(\n)[^"]*"/g, ($0, $1) => $0.replace(/\n/g, '\\n'))}]`
+  //   );
 
-  //   const [_originSubject, type, scope, subject] = result;
+  //   console.log(packageName, logList);
 
-  //   log.type = type || '';
-  //   log.scope = scope || '';
-  //   log.subject = subject || '';
-  // });
-
-  // console.log(logList);
-
-  // const logGroupByType = logList.reduce((prev, current) => {
-  //   if (!prev[current.type]) prev[current.type] = [];
-
-  //   prev[current.type].push(current);
-
-  //   return prev;
-  // }, {});
-
-  // console.log(1111111111, logGroupByType);
+  //   break;
+  // }
 };
 
 export default {
