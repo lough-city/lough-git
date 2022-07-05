@@ -36,6 +36,12 @@ class GitLog {
   tag({ filter }: { filter?: IGitTagFilter } = {}) {
     const commands = ['git', 'tag'];
     if (filter?.match) commands.push(`-l ${filter.match}`);
+
+    const { stdout } = execa.commandSync(commands.join(' '), { cwd: this.options.rootPath });
+
+    const tagList = stdout.split('\n');
+
+    return tagList;
   }
 }
 

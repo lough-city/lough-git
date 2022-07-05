@@ -8,7 +8,7 @@ import GitLog from './log';
 class GitOperate {
   protected options = {} as Required<IGitParameters>;
 
-  private log!: GitLog;
+  log!: GitLog;
 
   constructor(parameters: IGitParameters) {
     const { rootPath = process.cwd() } = parameters;
