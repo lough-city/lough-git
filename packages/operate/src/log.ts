@@ -12,7 +12,10 @@ class GitLog {
   commit({ filter }: { filter?: IGitLogFilter } = {}): Array<IGitLog> {
     const commands = ['git', 'log', '--date=iso', `--format=${JSON.stringify(GIT_LOG_FORMAT_FIELD)},`];
 
-    if (filter?.fromTag) commands.push(`${filter.fromTag}...${filter.toTag || 'HEAD'}`);
+    if (filter?.fromTag && filter?.toTag) commands.push(`${filter.fromTag}...${filter.toTag}`);
+    if (filter?.fromTag && !filter?.toTag) commands.push(`${filter.fromTag}...HEAD`);
+    if (!filter?.fromTag && filter?.toTag) commands.push(`${filter.toTag}`);
+
     if (filter?.changedDirOrFile) commands.push(`-- ${filter.changedDirOrFile}`);
 
     const { stdout } = execa.commandSync(commands.join(' '), { cwd: this.options.rootPath });
