@@ -1,0 +1,32 @@
+{
+  "name": "@lough/git-changelog",
+  "version": "0.0.0",
+  "description": "lough git changelog.",
+  "author": "City <city@nanzc.com>",
+  "main": "lib/index.js",
+  "types": "lib/index.d.ts",
+  "typings": "lib/index.d.ts",
+  "license": "MIT",
+  "keywords": [
+    "git",
+    "node"
+  ],
+  "files": [
+    "lib"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/AnCIity/lough-git.git"
+  },
+  "homepage": "https://github.com/AnCIity/lough-git",
+  "bugs": {
+    "url": "https://github.com/AnCIity/lough-git/issues"
+  },
+  "scripts": {
+    "build": "tsc"
+  },
+  "dependencies": {
+    "@lough/git-operate": "^0.0.0",
+    "@lough/npm-operate": "^0.1.0-beta.5"
+  }
+}

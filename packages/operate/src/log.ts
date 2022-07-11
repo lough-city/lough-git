@@ -1,12 +1,12 @@
 import execa from 'execa';
-import { IGitLog, IGitLogFilter, IGitLogOrigin, IGitParameters, IGitTagFilter } from './types';
+import { IGitLog, IGitLogFilter, IGitLogOrigin, IGitOperateParameters, IGitTagFilter } from './types';
 import { GIT_LOG_FORMAT_FIELD } from './constants';
 
 class GitLog {
-  protected options = {} as Required<IGitParameters>;
+  private options = {} as Required<IGitOperateParameters>;
 
-  constructor(options: Required<IGitParameters>) {
-    this.options = options;
+  constructor(parameters: Required<IGitOperateParameters>) {
+    this.options = parameters;
   }
 
   commit({ filter }: { filter?: IGitLogFilter } = {}): Array<IGitLog> {

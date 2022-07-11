@@ -3,7 +3,7 @@ import { GIT_LOG_FORMAT_FIELD } from './constants';
 /**
  * Git 操作类参数
  */
-export interface IGitParameters {
+export interface IGitOperateParameters {
   /**
    * 项目根路径
    * @default process.cwd()

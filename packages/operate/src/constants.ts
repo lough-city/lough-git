@@ -1,5 +1,5 @@
 /**
- * git log  字段
+ * Git log  字段
  */
 export enum GIT_LOG_FORMAT_FIELD {
   /**
@@ -153,10 +153,15 @@ const RELEASE = {
   release: 'release'
 };
 
+export type GetDevelopLogCommitType = keyof typeof ENGINEERING | keyof typeof RELEASE;
+
 /**
  * 开发日志提交类型
  */
-export const developCommitTypeList = [...Object.keys(ENGINEERING), ...Object.keys(RELEASE)];
+export const developLogCommitTypeList = [
+  ...Object.keys(ENGINEERING),
+  ...Object.keys(RELEASE)
+] as Array<GetDevelopLogCommitType>;
 
 /**
  * 功能
@@ -190,7 +195,11 @@ const BUG_FIX = {
   fix: 'fix'
 };
 
+export type GetUserLogCommitType = keyof typeof FEATURE | keyof typeof BUG_FIX;
+
 /**
  * 用户日志提交类型
  */
-export const userCommitTypeList = [...Object.keys(FEATURE), ...Object.keys(BUG_FIX)];
+export const userLogCommitTypeList = [...Object.keys(FEATURE), ...Object.keys(BUG_FIX)] as Array<GetUserLogCommitType>;
+
+export type GitAllCommitType = GetDevelopLogCommitType | GetUserLogCommitType;
