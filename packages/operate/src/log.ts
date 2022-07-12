@@ -1,6 +1,6 @@
 import execa from 'execa';
 import { IGitLog, IGitLogFilter, IGitLogOrigin, IGitOperateParameters, IGitTagFilter } from './types';
-import { GIT_LOG_FORMAT_FIELD } from './constants';
+import { GIT_COMMIT_TYPE, GIT_LOG_FORMAT_FIELD } from './constants';
 
 class GitLog {
   private options = {} as Required<IGitOperateParameters>;
@@ -25,14 +25,14 @@ class GitLog {
     );
 
     return logList.map(log => {
-      if (!log.originSubject) return log;
+      if (!log.originSubject) return { ...log, type: GIT_COMMIT_TYPE.undefined };
 
       const result = /^([a-z]*)(?:\(([^)]*)\))?: (.*)$/.exec(log.originSubject);
-      if (!result) return log;
+      if (!result) return { ...log, type: GIT_COMMIT_TYPE.undefined };
 
-      const [_originSubject, type = '', scope = '', subject = ''] = result;
+      const [_originSubject, type = GIT_COMMIT_TYPE.undefined, scope = '', subject = ''] = result;
 
-      return { ...log, type, scope, subject };
+      return { ...log, type: type as GIT_COMMIT_TYPE, scope, subject };
     });
   }
 
@@ -45,6 +45,15 @@ class GitLog {
     const tagList = stdout.split('\n');
 
     return tagList;
+  }
+
+  tagTime(tag: string) {
+    const commands = ['git', 'show', tag, '-s', `--format=%ai`];
+    const { stdout } = execa.commandSync(commands.join(' '), { cwd: this.options.rootPath });
+    const infoList = stdout.split('\n');
+    const date = new Date(infoList.pop() as string);
+
+    return `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`;
   }
 }
 

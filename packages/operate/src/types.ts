@@ -1,4 +1,4 @@
-import { GIT_LOG_FORMAT_FIELD } from './constants';
+import { GIT_COMMIT_TYPE, GIT_LOG_FORMAT_FIELD } from './constants';
 
 /**
  * Git 操作类参数
@@ -25,7 +25,7 @@ export interface IGitLog extends IGitLogOrigin {
   /**
    * 类型
    */
-  type?: string;
+  type: GIT_COMMIT_TYPE;
   /**
    * 范围
    */

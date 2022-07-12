@@ -1,5 +1,5 @@
 /**
- * Git log  字段
+ * Git 日志字段
  */
 export enum GIT_LOG_FORMAT_FIELD {
   /**
@@ -114,92 +114,71 @@ export enum GIT_LOG_FORMAT_FIELD {
 }
 
 /**
- * 工程化
+ * Git 提交类型
  */
-const ENGINEERING = {
+export enum GIT_COMMIT_TYPE {
+  /* 工程化 start */
   /**
    * 构建过程或辅助工具的变动
    */
-  chore: 'chore',
+  chore = 'chore',
   /**
    * 与 CI（持续集成服务）有关的改动
    */
-  ci: 'ci',
+  ci = 'ci',
   /**
    * 代码风格修改
    */
-  style: 'style',
+  style = 'style',
   /**
    * 文档
    */
-  docs: 'docs',
+  docs = 'docs',
   /**
    * 测试
    */
-  test: 'test'
-};
+  test = 'test',
+  /* 工程化 end */
 
-/**
- * 版本发布
- */
-const RELEASE = {
+  /* 版本发布 start */
   /**
    * 编译相关的修改，例如版本发布、对项目构建或者依赖的改动
    */
-  build: 'build',
+  build = 'build',
   /**
    * 发布
    */
-  release: 'release'
-};
+  release = 'release',
+  /* 版本发布 end */
 
-export type GetDevelopLogCommitType = keyof typeof ENGINEERING | keyof typeof RELEASE;
-
-/**
- * 开发日志提交类型
- */
-export const developLogCommitTypeList = [
-  ...Object.keys(ENGINEERING),
-  ...Object.keys(RELEASE)
-] as Array<GetDevelopLogCommitType>;
-
-/**
- * 功能
- */
-const FEATURE = {
+  /* 功能特点 start */
   /**
    * 新功能、新特性
    */
-  feat: 'feat',
+  feat = 'feat',
   /**
    * 页面布局与样式
    */
-  ui: 'ui',
+  ui = 'ui',
   /**
    * 重构
    */
-  refactor: 'refactor',
+  refactor = 'refactor',
   /**
    * 优化相关，比如：提升性能、体验
    */
-  perf: 'perf'
-};
+  perf = 'perf',
+  /* 功能特点 end */
 
-/**
- * BUG 修复
- */
-const BUG_FIX = {
+  /* 问题修复 start */
   /**
    * 修补BUG
    */
-  fix: 'fix'
-};
+  fix = 'fix',
+  /* 问题修复 end */
 
-export type GetUserLogCommitType = keyof typeof FEATURE | keyof typeof BUG_FIX;
-
-/**
- * 用户日志提交类型
- */
-export const userLogCommitTypeList = [...Object.keys(FEATURE), ...Object.keys(BUG_FIX)] as Array<GetUserLogCommitType>;
-
-export type GitAllCommitType = GetDevelopLogCommitType | GetUserLogCommitType;
+  /**
+   * 未定义
+   */
+  undefined = 'undefined'
+}

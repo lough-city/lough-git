@@ -21,13 +21,13 @@
     // "outDir": "./lib",
 
     // 提供额外的一些语法检查
-    "isolatedModules": false,
+    "isolatedModules": true,
 
     // 启用所有严格类型检查选项
     "strict": true,
 
     // 对于隐含有'any'类型的表达式和声明引发错误
-    "noImplicitAny": false,
+    "noImplicitAny": true,
 
     // 启用严格的空检查
     "strictNullChecks": true,

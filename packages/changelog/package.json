@@ -28,5 +28,8 @@
   "dependencies": {
     "@lough/git-operate": "^0.0.0",
     "@lough/npm-operate": "^0.1.0-beta.5"
+  },
+  "devDependencies": {
+    "@lyrical/types": "^0.0.6"
   }
 }

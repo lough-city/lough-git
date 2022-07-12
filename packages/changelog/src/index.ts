@@ -1,24 +1,28 @@
 import fs from 'fs';
 import path from 'path';
 import NpmOperate from '@lough/npm-operate';
-import GitOperate, {
-  developLogCommitTypeList,
-  GitAllCommitType,
-  IGitLog,
-  userLogCommitTypeList
-} from '@lough/git-operate';
+import GitOperate, { IGitLog, GIT_COMMIT_TYPE } from '@lough/git-operate';
+import { RequiredOmit } from '@lyrical/types';
 import GitLogRender from './markdown';
 import { IGitChangeLogParameters } from './types';
 import { GIT_CHANGE_LOG_CREATE_FILE_NAME, GIT_CHANGE_LOG_TYPE } from './constants';
+import config from './config';
 
 class GitChangeLog {
-  private options = {} as Required<IGitChangeLogParameters>;
+  private options = {} as RequiredOmit<IGitChangeLogParameters<true>, 'tagFilter' | 'logFilter'>;
 
   private npm!: NpmOperate;
   private git!: GitOperate;
 
   constructor(parameters: IGitChangeLogParameters) {
-    const { repo = '', rootPath = process.cwd(), nextVersion = 'Unreleased' } = parameters;
+    const {
+      repo = '',
+      rootPath = process.cwd(),
+      nextVersion = 'HEAD',
+      outDir = process.cwd(),
+      tagFilter,
+      logFilter
+    } = parameters;
 
     this.npm = new NpmOperate({ rootPath });
     this.git = new GitOperate({ rootPath });
@@ -26,48 +30,70 @@ class GitChangeLog {
     this.options.repo = repo;
     this.options.rootPath = rootPath;
     this.options.nextVersion = nextVersion;
+    this.options.outDir = Array.isArray(outDir) ? outDir : [outDir];
+    this.options.tagFilter = tagFilter;
+    this.options.logFilter = logFilter;
   }
 
   private getVersionCommitList({ fromTag, toTag }: { fromTag?: string; toTag?: string } = {}) {
-    return this.git.log.commit({ filter: { fromTag, toTag } });
+    return this.git.log.commit({ filter: { ...this.options.logFilter, fromTag, toTag } });
   }
 
-  private classifyCommitMap(commitList: Array<IGitLog>) {
-    return commitList.reduce((map, commit) => {
-      if (map[commit.type || '']) map[commit.type || ''].push(commit);
-      else map[commit.type || ''] = [commit];
-      return map;
-    }, {} as Record<GitAllCommitType, Array<IGitLog>>);
+  private classifyCommitMap(
+    commitList: Array<IGitLog>,
+    commitTypeList = Object.keys(config.types) as Array<GIT_COMMIT_TYPE>
+  ) {
+    return commitList
+      .filter(commit => commit.type && commitTypeList.includes(commit.type))
+      .reduce((map, commit) => {
+        if (map[commit.type]) map[commit.type].push(commit);
+        else map[commit.type] = [commit];
+        return map;
+      }, {} as Record<GIT_COMMIT_TYPE, Array<IGitLog>>);
   }
 
   private createMarkdown(logType: GIT_CHANGE_LOG_TYPE) {
     const render = new GitLogRender();
 
     render.createHeader(this.npm.readConfig().name);
-    const commitTypeList: Array<GitAllCommitType> =
-      logType === GIT_CHANGE_LOG_TYPE.user ? userLogCommitTypeList : developLogCommitTypeList;
+    const commitTypeList = Object.keys(config.types).filter(
+      key => config.types[key as keyof typeof GIT_COMMIT_TYPE].logType === logType
+    ) as Array<GIT_COMMIT_TYPE>;
     const commitTypeFile = `${GIT_CHANGE_LOG_CREATE_FILE_NAME[logType]}.md`;
 
-    const tagList = this.git.log.tag().sort(() => -1);
-    const versionTagList = tagList.map((tag, index) => ({ fromTag: tagList[index - 1], toTag: tag }));
+    const tagList = this.git.log.tag({ filter: this.options.tagFilter });
+    const versionTagList = [
+      ...tagList.map((tag, index) => ({ fromTag: tagList[index - 1], toTag: tag, isNext: false })),
+      { fromTag: tagList[tagList.length - 1], toTag: this.options.nextVersion, isNext: true }
+    ].sort(() => -1);
 
     for (const versionTag of versionTagList) {
-      render.createVersionMarkdown(versionTag.toTag || this.options.nextVersion);
-
       const commitList = this.getVersionCommitList(versionTag);
-      const classifyMap = this.classifyCommitMap(commitList);
+      const classifyMap = this.classifyCommitMap(commitList, commitTypeList);
+      if (versionTag?.isNext && !Object.values(classifyMap).some(v => v.length)) continue;
 
-      for (const type in classifyMap) {
-        if (!commitTypeList.includes(type as GitAllCommitType)) continue;
+      const date = new Date();
+      const time = versionTag.toTag
+        ? this.git.log.tagTime(versionTag.toTag)
+        : `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`;
+
+      const compareUrl = `${this.options.repo}/compare/${versionTag.fromTag}...${versionTag.toTag}`;
+      render.createVersionMarkdown(versionTag.toTag, compareUrl, time);
+
+      for (const type of commitTypeList) {
+        const commits = classifyMap[type];
+        if (!commits) continue;
 
         render.createClassifyMarkdown(type);
-        render.createCommitMarkdown(classifyMap[type]);
+        render.createCommitMarkdown(commits, this.options.repo);
       }
     }
 
     render.createFooterMarkdown();
 
-    fs.writeFileSync(path.join(process.cwd(), commitTypeFile), render.markdown, 'utf8');
+    for (const dir of this.options.outDir) {
+      fs.writeFileSync(path.join(dir, commitTypeFile), render.markdown, 'utf8');
+    }
   }
 
   createUserLog() {

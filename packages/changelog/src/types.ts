@@ -1,7 +1,9 @@
+import { IGitLogFilter, IGitTagFilter } from '@lough/git-operate';
+
 /**
  * Git ChangeLog 类参数
  */
-export interface IGitChangeLogParameters {
+export interface IGitChangeLogParameters<CORE = false> {
   /**
    * 仓库
    */
@@ -13,7 +15,20 @@ export interface IGitChangeLogParameters {
   rootPath?: string;
   /**
    * 下一个版本
-   * @default 'Unreleased'
+   * @default 'HEAD'
    */
   nextVersion?: string;
+  /**
+   * 输出目录
+   * @default process.cwd()
+   */
+  outDir?: CORE extends true ? Array<string> : string | Array<string>;
+  /**
+   * 标签筛选项
+   */
+  tagFilter?: Pick<IGitTagFilter, 'match'>;
+  /**
+   * 日志筛选项
+   */
+  logFilter?: Pick<IGitLogFilter, 'changedDirOrFile'>;
 }

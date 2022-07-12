@@ -1,4 +1,5 @@
-import { IGitLog } from '@lough/git-operate';
+import { IGitLog, GIT_COMMIT_TYPE } from '@lough/git-operate';
+import config from './config';
 
 class GitLogRender {
   private document: Array<string> = [];
@@ -16,19 +17,23 @@ class GitLogRender {
     );
   }
 
-  createVersionMarkdown(version: string) {
-    this.document.push('', `## ${version}`);
+  createVersionMarkdown(version: string, compareUrl: string, time?: string) {
+    this.document.push('', '', '', `## [${version}](${compareUrl})`);
+    if (time) this.document.push(`> ${time}`);
   }
 
-  createClassifyMarkdown(type: string) {
-    this.document.push('', `### ${type}`);
+  createClassifyMarkdown(type: GIT_COMMIT_TYPE) {
+    this.document.push('', `### ${config.types[type].section}`);
   }
 
-  createCommitMarkdown(commitList: Array<IGitLog>) {
-    this.document.push(
-      '',
-      ...commitList.map(commit => `- ${commit.scope ? `【${commit.scope}】: ` : ''}${commit.subject}`)
-    );
+  createCommitMarkdown(commitList: Array<IGitLog>, repo: string) {
+    this.document.push('');
+
+    commitList.forEach(commit => {
+      this.document.push(`- [${commit.abbrevHash}](${repo}/commit/${commit.hash}) ${commit.subject}`);
+      if (commit.scope) this.document.push(commit.scope);
+      if (commit.body) this.document.push(commit.body);
+    });
   }
 
   createFooterMarkdown() {

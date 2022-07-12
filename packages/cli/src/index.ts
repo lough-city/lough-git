@@ -10,7 +10,11 @@ function start() {
   const jsonResult = JSON.parse(jsonContent);
   program.version(jsonResult.version);
 
-  program.command(log.command).description(log.description).action(log.action);
+  program
+    .command(log.command)
+    .description(log.description)
+    .action(log.action)
+    .option('-l, --lerna [boolean]', 'Lerna Project', false);
 
   program.parseAsync(process.argv);
 }
