@@ -1,3 +1,4 @@
+import execa from 'execa';
 import { existsGitConfigSync } from './utils';
 import { IGitOperateParameters } from './types';
 import GitLog from './log';
@@ -9,6 +10,15 @@ class GitOperate {
   private options = {} as Required<IGitOperateParameters>;
 
   log!: GitLog;
+
+  get config() {
+    const { stdout } = execa.commandSync('git remote -v');
+    const repo = stdout.match(/origin  (.*?) \(push\)/)?.[1];
+
+    return {
+      repo
+    };
+  }
 
   constructor(parameters: IGitOperateParameters) {
     const { rootPath = process.cwd() } = parameters;

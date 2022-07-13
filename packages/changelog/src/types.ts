@@ -5,7 +5,8 @@ import { IGitLogFilter, IGitTagFilter } from '@lough/git-operate';
  */
 export interface IGitChangeLogParameters<CORE = false> {
   /**
-   * 仓库
+   * 仓库地址
+   * @default 通过 `git remote -v` 获取
    */
   repo?: string;
   /**

@@ -16,7 +16,7 @@ class GitChangeLog {
 
   constructor(parameters: IGitChangeLogParameters) {
     const {
-      repo = '',
+      repo = undefined,
       rootPath = process.cwd(),
       nextVersion = 'HEAD',
       outDir = process.cwd(),
@@ -27,7 +27,7 @@ class GitChangeLog {
     this.npm = new NpmOperate({ rootPath });
     this.git = new GitOperate({ rootPath });
 
-    this.options.repo = repo;
+    this.options.repo = repo || this.git.config.repo || '';
     this.options.rootPath = rootPath;
     this.options.nextVersion = nextVersion;
     this.options.outDir = Array.isArray(outDir) ? outDir : [outDir];

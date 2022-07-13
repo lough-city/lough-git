@@ -14,7 +14,8 @@ function start() {
     .command(log.command)
     .description(log.description)
     .action(log.action)
-    .option('-l, --lerna [boolean]', 'Lerna Project', false);
+    .option('-l, --lerna [boolean]', 'Lerna Project', false)
+    .option('-p, --projectPath [string]', 'Project Root Path', process.cwd());
 
   program.parseAsync(process.argv);
 }

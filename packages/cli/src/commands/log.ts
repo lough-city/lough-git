@@ -1,15 +1,30 @@
-import path from 'path';
 import GitChangeLog from '@lough/git-changelog';
-import { program } from 'commander';
 
-const action = async (_d: any, data: { lerna: boolean }) => {
-  const projectPath = path.join('E:', 'City', 'lyrical', 'lyrical');
-  // TODO: 提取变量
+interface IOptions {
+  /**
+   * 是否 lerna 项目
+   * @default false
+   */
+  lerna: boolean;
+  /**
+   * 项目根路径
+   * @default process.cwd()
+   */
+  projectPath: string;
+  /**
+   * 仓库地址
+   * @default 通过 `git remote -v` 获取
+   */
+  repo?: string;
+}
 
-  if (data.lerna) {
+// TODO: 提取变量
+
+const action = async (_arguments: any, options: IOptions) => {
+  if (options.lerna) {
     const gitChangeLog = new GitChangeLog({
-      rootPath: projectPath,
-      repo: 'https://github.com/AnCIity/lyrical',
+      rootPath: options.projectPath,
+      repo: options.repo,
       tagFilter: { match: '*react*' },
       logFilter: { changedDirOrFile: 'packages/react' }
     });
@@ -18,8 +33,8 @@ const action = async (_d: any, data: { lerna: boolean }) => {
     gitChangeLog.createDevelopLog();
   } else {
     const gitChangeLog = new GitChangeLog({
-      rootPath: projectPath,
-      repo: 'https://github.com/AnCIity/lyrical'
+      rootPath: options.projectPath,
+      repo: options.repo
     });
 
     gitChangeLog.createUserLog();
@@ -28,7 +43,7 @@ const action = async (_d: any, data: { lerna: boolean }) => {
 };
 
 export default {
-  command: 'log [lerna]',
+  command: 'log',
   description: 'create git commit log.',
   action
 };
