@@ -38,7 +38,7 @@ interface IOptions {
   changedDir?: string;
 }
 
-const action = async (_arguments: any, options: IOptions) => {
+const action = async (options: IOptions) => {
   const gitChangeLog = new GitChangeLog({
     rootPath: options.projectPath,
     repo: options.repo,
