@@ -2,7 +2,8 @@
 import { program } from 'commander';
 import { join } from 'path';
 import { readFileSync } from 'fs';
-import log from './commands/log';
+import log from './commands/changelog';
+import { GIT_CHANGE_LOG_TYPE } from '@lough/git-changelog';
 
 function start() {
   const jsonPath = join(__dirname, '../package.json');
@@ -14,8 +15,16 @@ function start() {
     .command(log.command)
     .description(log.description)
     .action(log.action)
+    .option(
+      '-o, --outputLogType [string...]',
+      `Output Log Type: Array<${Object.keys(GIT_CHANGE_LOG_TYPE).join(' | ')}>`,
+      Object.keys(GIT_CHANGE_LOG_TYPE)
+    )
+    .option('-p, --projectPath [string]', 'Project Root Path', process.cwd())
+    .option('-r, --repo [string]', 'Repository')
     .option('-l, --lerna [boolean]', 'Lerna Project', false)
-    .option('-p, --projectPath [string]', 'Project Root Path', process.cwd());
+    .option('-t, --tagMatch [string]', 'Tag Match')
+    .option('-c, --changedDir [string]', 'Commit Changed Dir');
 
   program.parseAsync(process.argv);
 }

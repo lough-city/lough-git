@@ -19,11 +19,11 @@ export interface IGitChangeLogParameters<CORE = false> {
    * @default 'HEAD'
    */
   nextVersion?: string;
-  /**
-   * 输出目录
-   * @default process.cwd()
-   */
-  outDir?: CORE extends true ? Array<string> : string | Array<string>;
+  // /**
+  //  * 输出目录
+  //  * @default process.cwd()
+  //  */
+  // outDir?: CORE extends true ? Array<string> : string | Array<string>;
   /**
    * 标签筛选项
    */

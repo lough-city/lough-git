@@ -19,7 +19,7 @@ class GitChangeLog {
       repo = undefined,
       rootPath = process.cwd(),
       nextVersion = 'HEAD',
-      outDir = process.cwd(),
+      // outDir = process.cwd(),
       tagFilter,
       logFilter
     } = parameters;
@@ -30,7 +30,7 @@ class GitChangeLog {
     this.options.repo = repo || this.git.config.repo || '';
     this.options.rootPath = rootPath;
     this.options.nextVersion = nextVersion;
-    this.options.outDir = Array.isArray(outDir) ? outDir : [outDir];
+    // this.options.outDir = Array.isArray(outDir) ? outDir : [outDir];
     this.options.tagFilter = tagFilter;
     this.options.logFilter = logFilter;
   }
@@ -52,14 +52,14 @@ class GitChangeLog {
       }, {} as Record<GIT_COMMIT_TYPE, Array<IGitLog>>);
   }
 
-  private createMarkdown(logType: GIT_CHANGE_LOG_TYPE) {
+  createMarkdown(logType: GIT_CHANGE_LOG_TYPE) {
     const render = new GitLogRender();
 
     render.createHeader(this.npm.readConfig().name);
     const commitTypeList = Object.keys(config.types).filter(
       key => config.types[key as keyof typeof GIT_COMMIT_TYPE].logType === logType
     ) as Array<GIT_COMMIT_TYPE>;
-    const commitTypeFile = `${GIT_CHANGE_LOG_CREATE_FILE_NAME[logType]}.md`;
+    // const commitTypeFile = `${GIT_CHANGE_LOG_CREATE_FILE_NAME[logType]}.md`;
 
     const tagList = this.git.log.tag({ filter: this.options.tagFilter });
     const versionTagList = [
@@ -91,17 +91,19 @@ class GitChangeLog {
 
     render.createFooterMarkdown();
 
-    for (const dir of this.options.outDir) {
-      fs.writeFileSync(path.join(dir, commitTypeFile), render.markdown, 'utf8');
-    }
+    // for (const dir of this.options.outDir) {
+    //   fs.writeFileSync(path.join(dir, commitTypeFile), render.markdown, 'utf8');
+    // }
+
+    return render.markdown;
   }
 
   createUserLog() {
-    this.createMarkdown(GIT_CHANGE_LOG_TYPE.user);
+    return this.createMarkdown(GIT_CHANGE_LOG_TYPE.user);
   }
 
   createDevelopLog() {
-    this.createMarkdown(GIT_CHANGE_LOG_TYPE.develop);
+    return this.createMarkdown(GIT_CHANGE_LOG_TYPE.develop);
   }
 }
 

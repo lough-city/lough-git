@@ -32,6 +32,7 @@
   "dependencies": {
     "@lough/git-changelog": "^0.0.0",
     "commander": "^9.3.0",
-    "execa": "5.1.1"
+    "execa": "5.1.1",
+    "ora": "5.4.1"
   }
 }
