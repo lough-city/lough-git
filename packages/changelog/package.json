@@ -1,6 +1,6 @@
 {
   "name": "@lough/git-changelog",
-  "version": "0.0.0",
+  "version": "0.0.1-alpha.0",
   "description": "lough git changelog.",
   "author": "City <city@nanzc.com>",
   "main": "lib/index.js",
@@ -26,7 +26,7 @@
     "build": "tsc"
   },
   "dependencies": {
-    "@lough/git-operate": "^0.0.0",
+    "@lough/git-operate": "^0.0.1-alpha.0",
     "@lough/npm-operate": "^0.1.0-beta.5"
   },
   "devDependencies": {
