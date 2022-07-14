@@ -20,9 +20,7 @@ class GitOperate {
     };
   }
 
-  constructor(parameters: IGitOperateParameters) {
-    const { rootPath = process.cwd() } = parameters;
-
+  constructor({ rootPath = process.cwd() }: IGitOperateParameters = {}) {
     if (!existsGitConfigSync(rootPath)) throw new Error('请先初始化 GIT，或者在 GIT 项目中运行！');
 
     this.options.rootPath = rootPath;
