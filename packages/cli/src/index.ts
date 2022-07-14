@@ -2,6 +2,7 @@
 import { program } from 'commander';
 import { join } from 'path';
 import { readFileSync } from 'fs';
+import init from './commands/init';
 import log from './commands/changelog';
 import { GIT_CHANGE_LOG_TYPE } from '@lough/git-changelog';
 
@@ -10,6 +11,8 @@ function start() {
   const jsonContent = readFileSync(jsonPath, 'utf-8');
   const jsonResult = JSON.parse(jsonContent);
   program.version(jsonResult.version);
+
+  program.command(init.command).description(init.description).action(init.action);
 
   program
     .command(log.command)
