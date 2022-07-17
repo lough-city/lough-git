@@ -13,7 +13,7 @@ class GitOperate {
 
   get config() {
     const { stdout } = execa.commandSync('git remote -v');
-    const repo = stdout.match(/origin  (.*?) \(push\)/)?.[1];
+    const repo = stdout.match(/origin\t(.*?) \(push\)/)?.[1];
 
     return {
       repo
