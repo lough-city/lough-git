@@ -1,6 +1,6 @@
 {
   "name": "@lough/git-cli",
-  "version": "0.0.2-alpha.3",
+  "version": "0.0.2-alpha.4",
   "description": "This is a Git tool docked in lough.",
   "author": "City <city@nanzc.com>",
   "license": "MIT",
