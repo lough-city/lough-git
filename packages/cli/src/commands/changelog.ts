@@ -53,7 +53,11 @@ const action = async (options: IOptions) => {
     const markdown = gitChangeLog.createMarkdown(outputLogType);
     succeedSpinner(chalk.green(`${GIT_CHANGE_LOG_TYPE_LABEL[outputLogType]}: 生成成功`));
     startSpinner(`${GIT_CHANGE_LOG_TYPE_LABEL[outputLogType]}: 开始写入`);
-    fs.writeFileSync(path.join(options.projectPath, GIT_CHANGE_LOG_CREATE_FILE_NAME[outputLogType]), markdown, 'utf8');
+    fs.writeFileSync(
+      path.join(options.projectPath, `${GIT_CHANGE_LOG_CREATE_FILE_NAME[outputLogType]}.md`),
+      markdown,
+      'utf8'
+    );
     succeedSpinner(chalk.green(`${GIT_CHANGE_LOG_TYPE_LABEL[outputLogType]}: 写入成功`));
   }
 
