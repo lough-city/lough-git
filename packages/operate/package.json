@@ -1,6 +1,6 @@
 {
   "name": "@lough/git-operate",
-  "version": "0.0.2-alpha.2",
+  "version": "0.0.2-y.0",
   "description": "lough git operate.",
   "author": "City <city@nanzc.com>",
   "main": "lib/index.js",
