@@ -1,6 +1,6 @@
 {
   "name": "@lough/git-cli",
-  "version": "0.0.2-y.0",
+  "version": "0.0.2",
   "description": "This is a Git tool docked in lough.",
   "author": "City <city@nanzc.com>",
   "license": "MIT",
@@ -32,8 +32,8 @@
     "typescript": "^4.7.4"
   },
   "dependencies": {
-    "@lough/git-changelog": "^0.0.2-y.0",
-    "@lough/git-operate": "^0.0.2-y.0",
+    "@lough/git-changelog": "^0.0.2",
+    "@lough/git-operate": "^0.0.2",
     "@lough/npm-operate": "^0.1.0-beta.5",
     "chalk": "4.1.2",
     "commander": "^9.3.0",
