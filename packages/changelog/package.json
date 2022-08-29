@@ -27,7 +27,8 @@
     "url": "https://github.com/AnCIity/lough-git/issues"
   },
   "scripts": {
-    "build": "tsc"
+    "build": "tsc",
+    "prepublishOnly": "npm run build"
   },
   "dependencies": {
     "@lough/git-operate": "^0.0.2-y.0",
