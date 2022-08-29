@@ -1,3 +1,3 @@
 module.exports = {
-  extends: ['@lough/eslint-config/typescript']
+  extends: ['@lough/eslint-config/node']
 };

@@ -25,7 +25,7 @@ function start() {
     )
     .option('-p, --projectPath [string]', 'Project Root Path', process.cwd())
     .option('-r, --repo [string]', 'Repository')
-    .option('-l, --lerna [boolean]', 'Lerna Project', false)
+    // .option('-l, --lerna [boolean]', 'Lerna Project', false)
     .option('-t, --tagMatch [string]', 'Tag Match')
     .option('-c, --changedDir [string]', 'Commit Changed Dir');
 

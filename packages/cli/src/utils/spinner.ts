@@ -16,3 +16,19 @@ export const succeedSpinner = (text?: string) => {
 export const failSpinner = (text?: string) => {
   spinner.fail(chalk.red(text));
 };
+
+export const startLoadingSpinner = (text: string) => {
+  spinner.start(`${text}...\n`);
+};
+
+export const textLoadingSpinner = (text: string) => {
+  spinner.text = `${text}...\n`;
+};
+
+export const succeedLoadingSpinner = (text: string) => {
+  spinner.succeed(`${text}\n`);
+};
+
+export const failLoadingSpinner = (text: string) => {
+  spinner.fail(`${text}\n`);
+};

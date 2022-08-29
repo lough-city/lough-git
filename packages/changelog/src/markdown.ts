@@ -29,11 +29,32 @@ class GitLogRender {
   createCommitMarkdown(commitList: Array<IGitLog>, repo: string) {
     this.document.push('');
 
-    commitList.forEach(commit => {
+    const commitScopeClassify: Record<string, Array<IGitLog>> = {};
+    const commitNotHaveScopeList = [];
+
+    for (const commit of commitList) {
+      if (commit.scope) {
+        if (commitScopeClassify[commit.scope]) commitScopeClassify[commit.scope].push(commit);
+        else commitScopeClassify[commit.scope] = [commit];
+      } else commitNotHaveScopeList.push(commit);
+    }
+
+    commitNotHaveScopeList.forEach(commit => {
       this.document.push(`- [${commit.abbrevHash}](${repo}/commit/${commit.hash}) ${commit.subject}`);
       if (commit.scope) this.document.push(commit.scope);
       if (commit.body) this.document.push(commit.body);
     });
+
+    for (const commitScope in commitScopeClassify) {
+      this.document.push('');
+      this.document.push(`#### ${commitScope}`);
+      const commitScopeList = commitScopeClassify[commitScope];
+
+      for (const commit of commitScopeList) {
+        this.document.push(`- [${commit.abbrevHash}](${repo}/commit/${commit.hash}) ${commit.subject}`);
+        if (commit.body) this.document.push(commit.body);
+      }
+    }
   }
 
   createFooterMarkdown() {

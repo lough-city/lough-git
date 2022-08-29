@@ -6,7 +6,7 @@ import GitChangeLog, {
 import fs from 'fs';
 import path from 'path';
 import chalk from 'chalk';
-import { succeedSpinner, startSpinner } from '../utils/spinner';
+import { succeedSpinner, startSpinner, startLoadingSpinner, succeedLoadingSpinner } from '../utils/spinner';
 
 interface IOptions {
   /**
@@ -46,22 +46,20 @@ const action = async (options: IOptions) => {
     logFilter: { changedDirOrFile: options.changedDir }
   });
 
-  startSpinner('changelog: start!');
-
   for (const outputLogType of options.outputLogType) {
-    startSpinner(`${GIT_CHANGE_LOG_TYPE_LABEL[outputLogType]}: 开始生成`);
+    startLoadingSpinner(`${GIT_CHANGE_LOG_TYPE_LABEL[outputLogType]}: 开始生成`);
     const markdown = gitChangeLog.createMarkdown(outputLogType);
-    succeedSpinner(chalk.green(`${GIT_CHANGE_LOG_TYPE_LABEL[outputLogType]}: 生成成功`));
-    startSpinner(`${GIT_CHANGE_LOG_TYPE_LABEL[outputLogType]}: 开始写入`);
+    succeedLoadingSpinner(chalk.green(`${GIT_CHANGE_LOG_TYPE_LABEL[outputLogType]}: 生成成功`));
+    startLoadingSpinner(`${GIT_CHANGE_LOG_TYPE_LABEL[outputLogType]}: 开始写入`);
     fs.writeFileSync(
       path.join(options.projectPath, `${GIT_CHANGE_LOG_CREATE_FILE_NAME[outputLogType]}.md`),
       markdown,
       'utf8'
     );
-    succeedSpinner(chalk.green(`${GIT_CHANGE_LOG_TYPE_LABEL[outputLogType]}: 写入成功`));
+    succeedLoadingSpinner(chalk.green(`${GIT_CHANGE_LOG_TYPE_LABEL[outputLogType]}: 写入成功`));
   }
 
-  succeedSpinner(chalk.green('changelog: end!'));
+  succeedSpinner(chalk.green('Changelog End.'));
 };
 
 export default {

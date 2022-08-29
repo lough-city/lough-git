@@ -28,6 +28,7 @@ class GitChangeLog {
     this.git = new GitOperate({ rootPath });
 
     this.options.repo = repo || this.git.config.repo || '';
+    this.options.repo = this.options.repo.includes('.git') ? this.options.repo.replace('.git', '') : this.options.repo;
     this.options.rootPath = rootPath;
     this.options.nextVersion = nextVersion;
     // this.options.outDir = Array.isArray(outDir) ? outDir : [outDir];
