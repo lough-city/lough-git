@@ -5,24 +5,17 @@ import GitOperate, { IGitLog, GIT_COMMIT_TYPE } from '@lough/git-operate';
 import { RequiredOmit } from '@lyrical/types';
 import GitLogRender from './markdown';
 import { IGitChangeLogParameters } from './types';
-import { GIT_CHANGE_LOG_CREATE_FILE_NAME, GIT_CHANGE_LOG_TYPE } from './constants';
+import { GIT_CHANGE_LOG_TYPE } from './constants';
 import config from './config';
 
 class GitChangeLog {
-  private options = {} as RequiredOmit<IGitChangeLogParameters<true>, 'tagFilter' | 'logFilter'>;
+  private options = {} as RequiredOmit<IGitChangeLogParameters, 'tagFilter' | 'logFilter'>;
 
   private npm!: NpmOperate;
   private git!: GitOperate;
 
   constructor(parameters: IGitChangeLogParameters) {
-    const {
-      repo = undefined,
-      rootPath = process.cwd(),
-      nextVersion = 'HEAD',
-      // outDir = process.cwd(),
-      tagFilter,
-      logFilter
-    } = parameters;
+    const { repo = undefined, rootPath = process.cwd(), nextVersion = 'HEAD', tagFilter, logFilter } = parameters;
 
     this.npm = new NpmOperate({ rootPath });
     this.git = new GitOperate({ rootPath });
@@ -31,7 +24,6 @@ class GitChangeLog {
     this.options.repo = this.options.repo.includes('.git') ? this.options.repo.replace('.git', '') : this.options.repo;
     this.options.rootPath = rootPath;
     this.options.nextVersion = nextVersion;
-    // this.options.outDir = Array.isArray(outDir) ? outDir : [outDir];
     this.options.tagFilter = tagFilter;
     this.options.logFilter = logFilter;
   }
@@ -53,7 +45,12 @@ class GitChangeLog {
       }, {} as Record<GIT_COMMIT_TYPE, Array<IGitLog>>);
   }
 
-  createMarkdown(logType: GIT_CHANGE_LOG_TYPE) {
+  /**
+   * 创建日志 markdown
+   * @param logType "user" | "develop"
+   * @returns markdown
+   */
+  createLogMarkdown(logType: GIT_CHANGE_LOG_TYPE) {
     const render = new GitLogRender();
 
     render.createHeader(this.npm.readConfig().name);
@@ -92,19 +89,23 @@ class GitChangeLog {
 
     render.createFooterMarkdown();
 
-    // for (const dir of this.options.outDir) {
-    //   fs.writeFileSync(path.join(dir, commitTypeFile), render.markdown, 'utf8');
-    // }
-
     return render.markdown;
   }
 
+  /**
+   * 创建用户日志
+   * @returns markdown
+   */
   createUserLog() {
-    return this.createMarkdown(GIT_CHANGE_LOG_TYPE.user);
+    return this.createLogMarkdown(GIT_CHANGE_LOG_TYPE.user);
   }
 
+  /**
+   * 创建开发日志
+   * @returns markdown
+   */
   createDevelopLog() {
-    return this.createMarkdown(GIT_CHANGE_LOG_TYPE.develop);
+    return this.createLogMarkdown(GIT_CHANGE_LOG_TYPE.develop);
   }
 }
 

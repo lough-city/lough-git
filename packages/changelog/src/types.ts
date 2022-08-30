@@ -3,7 +3,7 @@ import { IGitLogFilter, IGitTagFilter } from '@lough/git-operate';
 /**
  * Git ChangeLog 类参数
  */
-export interface IGitChangeLogParameters<CORE = false> {
+export interface IGitChangeLogParameters {
   /**
    * 仓库地址
    * @default 通过 `git remote -v` 获取
@@ -19,11 +19,6 @@ export interface IGitChangeLogParameters<CORE = false> {
    * @default 'HEAD'
    */
   nextVersion?: string;
-  // /**
-  //  * 输出目录
-  //  * @default process.cwd()
-  //  */
-  // outDir?: CORE extends true ? Array<string> : string | Array<string>;
   /**
    * 标签筛选项
    */

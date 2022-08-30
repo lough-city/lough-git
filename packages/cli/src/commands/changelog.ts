@@ -6,7 +6,7 @@ import GitChangeLog, {
 import fs from 'fs';
 import path from 'path';
 import chalk from 'chalk';
-import { succeedSpinner, startSpinner, startLoadingSpinner, succeedLoadingSpinner } from '../utils/spinner';
+import { succeedSpinner, startLoadingSpinner, succeedLoadingSpinner } from '../utils/spinner';
 
 interface IOptions {
   /**

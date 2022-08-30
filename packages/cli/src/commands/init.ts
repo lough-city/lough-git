@@ -62,6 +62,6 @@ const action = async () => {
 
 export default {
   command: 'init',
-  description: '初始化 git 日志',
+  description: 'init project git log function.',
   action
 };
