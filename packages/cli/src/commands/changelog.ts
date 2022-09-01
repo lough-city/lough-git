@@ -48,7 +48,7 @@ const action = async (options: IOptions) => {
 
   for (const outputLogType of options.outputLogType) {
     startLoadingSpinner(`${GIT_CHANGE_LOG_TYPE_LABEL[outputLogType]}: 开始生成`);
-    const markdown = gitChangeLog.createMarkdown(outputLogType);
+    const markdown = gitChangeLog.createLogMarkdown(outputLogType);
     succeedLoadingSpinner(chalk.green(`${GIT_CHANGE_LOG_TYPE_LABEL[outputLogType]}: 生成成功`));
     startLoadingSpinner(`${GIT_CHANGE_LOG_TYPE_LABEL[outputLogType]}: 开始写入`);
     fs.writeFileSync(

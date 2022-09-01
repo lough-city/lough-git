@@ -1,6 +1,6 @@
 {
   "name": "@lough/git-changelog",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "lough git changelog.",
   "author": "City <city@nanzc.com>",
   "main": "lib/index.js",
@@ -31,7 +31,7 @@
     "prepublishOnly": "npm run build"
   },
   "dependencies": {
-    "@lough/git-operate": "^0.0.2",
+    "@lough/git-operate": "^0.0.3",
     "@lough/npm-operate": "^0.1.0-beta.5"
   },
   "devDependencies": {
