@@ -42,6 +42,8 @@ class GitLog {
 
     const { stdout } = execa.commandSync(commands.join(' '), { cwd: this.options.rootPath });
 
+    if (!stdout) return [];
+
     const tagList = stdout.split('\n');
 
     return tagList;
