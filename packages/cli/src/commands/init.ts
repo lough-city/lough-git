@@ -1,7 +1,7 @@
 import chalk from 'chalk';
 import { prompt } from 'inquirer';
 import GitOperate from '@lough/git-operate';
-import NpmOperate from '@lough/npm-operate';
+import { Package } from '@lough/npm-operate';
 import { startLoadingSpinner, succeedLoadingSpinner, succeedSpinner } from '../utils/spinner';
 
 const PACKAGE = '@lough/git-cli';
@@ -18,28 +18,30 @@ const getSub = (keyList: Array<string>) =>
 
 const action = async () => {
   const _git = new GitOperate();
-  const npm = new NpmOperate();
+  const npm = new Package();
 
-  if (npm.isLernaProject) {
-    const list = await getSub(Object.keys(npm.packages));
+  if (npm.options.isWorkspaces) {
+    const subList = await getSub([npm.name, ...npm.children.map(item => item.name)]);
+    const list = [
+      ...(subList.includes(npm.name) ? [npm] : []),
+      ...npm.children.filter(item => subList.includes(item.name))
+    ];
 
-    for (const packageName of list) {
-      const config = npm.packages[packageName];
-
-      startLoadingSpinner(`${config.name}：开始安装 ${PACKAGE}`);
-      npm.uninstallLerna(PACKAGE, config.name);
-      npm.installDevLerna(PACKAGE, config.name);
-      succeedLoadingSpinner(`${config.name}：安装 ${PACKAGE} 成功`);
+    for (const item of list) {
+      startLoadingSpinner(`${item.name}：开始安装 ${PACKAGE}`);
+      item.uninstall(PACKAGE);
+      item.installDev(PACKAGE);
+      succeedLoadingSpinner(`${item.name}：安装 ${PACKAGE} 成功`);
 
       /* 配置写入 */
-      startLoadingSpinner(`${config.name}：开始写入命令 lough-git`);
-      const npmConfig = npm.readConfigLerna(config.name);
+      startLoadingSpinner(`${item.name}：开始写入命令 lough-git`);
+      const npmConfig = item.readConfig();
 
       if (!npmConfig.scripts) npmConfig.scripts = {};
-      npmConfig.scripts.changelog = ['lough-git changelog', `-t ${config.name}*`, `-c .`].join(' ');
+      npmConfig.scripts.changelog = ['lough-git changelog', `-t ${item.name}*`, `-c .`].join(' ');
 
-      npm.writeConfigLerna(npmConfig, config.name);
-      succeedLoadingSpinner(`${config.name}：写入命令 lough-git 成功`);
+      item.writeConfig(npmConfig);
+      succeedLoadingSpinner(`${item.name}：写入命令 lough-git 成功`);
     }
   } else {
     startLoadingSpinner(`开始安装 ${PACKAGE}`);

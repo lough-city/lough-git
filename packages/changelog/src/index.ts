@@ -1,6 +1,4 @@
-import fs from 'fs';
-import path from 'path';
-import NpmOperate from '@lough/npm-operate';
+import { Package } from '@lough/npm-operate';
 import GitOperate, { IGitLog, GIT_COMMIT_TYPE } from '@lough/git-operate';
 import { RequiredOmit } from '@lyrical/types';
 import GitLogRender from './markdown';
@@ -11,13 +9,13 @@ import config from './config';
 class GitChangeLog {
   private options = {} as RequiredOmit<IGitChangeLogParameters, 'tagFilter' | 'logFilter'>;
 
-  private npm!: NpmOperate;
-  private git!: GitOperate;
+  private npm: Package;
+  private git: GitOperate;
 
   constructor(parameters: IGitChangeLogParameters) {
     const { repo = undefined, rootPath = process.cwd(), nextVersion = 'HEAD', tagFilter, logFilter } = parameters;
 
-    this.npm = new NpmOperate({ rootPath });
+    this.npm = new Package({ dirName: rootPath });
     this.git = new GitOperate({ rootPath });
 
     this.options.repo = repo || this.git.config.repo || '';
@@ -53,7 +51,7 @@ class GitChangeLog {
   createLogMarkdown(logType: GIT_CHANGE_LOG_TYPE) {
     const render = new GitLogRender();
 
-    render.createHeader(this.npm.readConfig().name);
+    render.createHeader(this.npm.name);
     const commitTypeList = Object.keys(config.types).filter(
       key => config.types[key as keyof typeof GIT_COMMIT_TYPE].logType === logType
     ) as Array<GIT_COMMIT_TYPE>;
