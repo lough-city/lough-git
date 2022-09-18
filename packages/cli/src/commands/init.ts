@@ -38,7 +38,11 @@ const action = async () => {
       const npmConfig = item.readConfig();
 
       if (!npmConfig.scripts) npmConfig.scripts = {};
-      npmConfig.scripts.changelog = ['lough-git changelog', `-t ${item.name}*`, `-c .`].join(' ');
+      npmConfig.scripts.changelog = [
+        'lough-git changelog',
+        ...(item.options.isWorkspaces ? [] : [`-t ${item.name}*`]),
+        `-c .`
+      ].join(' ');
 
       item.writeConfig(npmConfig);
       succeedLoadingSpinner(`${item.name}：写入命令 lough-git 成功`);
