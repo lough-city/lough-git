@@ -34,7 +34,7 @@
   "dependencies": {
     "@lough/git-changelog": "^0.0.4",
     "@lough/git-operate": "^0.0.4",
-    "@lough/npm-operate": "^0.1.0-beta.5",
+    "@lough/npm-operate": "^0.2.0-beta.0",
     "chalk": "4.1.2",
     "commander": "^9.3.0",
     "execa": "5.1.1",
