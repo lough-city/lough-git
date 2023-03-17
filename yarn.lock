@@ -950,10 +950,10 @@
     eslint-plugin-react "^7.26.0"
     eslint-plugin-react-hooks "^4.2.0"
 
-"@lough/npm-operate@^0.2.0-beta.0":
-  version "0.2.0-beta.0"
-  resolved "https://registry.yarnpkg.com/@lough/npm-operate/-/npm-operate-0.2.0-beta.0.tgz#bc4ee4d8340aaac891eefd24deb84e543b175c14"
-  integrity sha512-we4Fewy8y/lywZibJQnsmeE9PiT9kqEH/MsVCdZsXj1vtZ+duoE/dOCV/TAm9tK9KVtS+gZGgsHrOM1vthoemw==
+"@lough/npm-operate@^0.2.0":
+  version "0.2.0"
+  resolved "https://registry.yarnpkg.com/@lough/npm-operate/-/npm-operate-0.2.0.tgz#9f6473126b21dcaf1bcc5d7b75641024add32df9"
+  integrity sha512-wQmwyEDT8pf/EFhXx8Q49TPLLSgz/wSn0u/qE/Vs987rKjc5CjaAFhpBM30fcBJ0fj8umq7o88pRcIyUst0lqQ==
   dependencies:
     execa "5.1.1"
 
