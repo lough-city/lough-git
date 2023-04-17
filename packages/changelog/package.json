@@ -1,6 +1,6 @@
 {
   "name": "@lough/git-changelog",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "description": "Lough git changelog.",
   "keywords": [
     "git",
@@ -33,7 +33,7 @@
     "dev": "lough-build dev"
   },
   "dependencies": {
-    "@lough/git-operate": "^0.0.4",
+    "@lough/git-operate": "^0.0.5",
     "@lough/npm-operate": "^0.3.1"
   },
   "devDependencies": {

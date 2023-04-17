@@ -1,6 +1,6 @@
 {
   "name": "@lough/git-cli",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "description": "This is a Git tool docked in lough.",
   "keywords": [
     "git",
@@ -37,8 +37,8 @@
     "dev": "lough-build dev"
   },
   "dependencies": {
-    "@lough/git-changelog": "^0.0.5",
-    "@lough/git-operate": "^0.0.4",
+    "@lough/git-changelog": "^0.0.6",
+    "@lough/git-operate": "^0.0.5",
     "@lough/npm-operate": "^0.3.1",
     "chalk": "4.1.2",
     "commander": "^10.0.0",
