@@ -1,40 +1,48 @@
 {
   "name": "@lough/git-changelog",
   "version": "0.0.5",
-  "description": "lough git changelog.",
-  "author": "City <city@nanzc.com>",
-  "main": "lib/index.js",
-  "types": "lib/index.d.ts",
-  "typings": "lib/index.d.ts",
-  "license": "MIT",
+  "description": "Lough git changelog.",
   "keywords": [
     "git",
     "node"
   ],
-  "files": [
-    "lib"
-  ],
-  "publishConfig": {
-    "registry": "https://registry.npmjs.org/",
-    "access": "public"
+  "author": {
+    "name": "Lough",
+    "email": "lough@nanzc.com",
+    "home": "lough.city"
   },
+  "homepage": "https://github.com/lough-city/lough-git",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/AnCIity/lough-git.git"
+    "url": "git+https://github.com/lough-city/lough-git.git"
   },
-  "homepage": "https://github.com/AnCIity/lough-git",
   "bugs": {
-    "url": "https://github.com/AnCIity/lough-git/issues"
+    "url": "https://github.com/lough-city/lough-git/issues"
   },
+  "type": "module",
+  "files": [
+    "lib",
+    "dist",
+    "es"
+  ],
+  "main": "es/index.js",
+  "types": "es/index.d.ts",
   "scripts": {
-    "build": "tsc",
-    "prepublishOnly": "npm run build"
+    "prepublishOnly": "npm run build",
+    "build": "lough-build",
+    "dev": "lough-build dev"
   },
   "dependencies": {
     "@lough/git-operate": "^0.0.4",
-    "@lough/npm-operate": "^0.2.0"
+    "@lough/npm-operate": "^0.3.1"
   },
   "devDependencies": {
+    "@lough/build-cli": "^0.1.2",
     "@lyrical/types": "^0.0.6"
-  }
+  },
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
+  },
+  "license": "MIT"
 }

@@ -1,6 +1,6 @@
 import execa from 'execa';
-import { IGitLog, IGitLogFilter, IGitLogOrigin, IGitOperateParameters, IGitTagFilter } from './types';
 import { GIT_COMMIT_TYPE, GIT_LOG_FORMAT_FIELD } from './constants';
+import { IGitLog, IGitLogFilter, IGitLogOrigin, IGitOperateParameters, IGitTagFilter } from './types';
 
 class GitLog {
   private options = {} as Required<IGitOperateParameters>;

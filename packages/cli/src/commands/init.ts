@@ -1,7 +1,7 @@
-import chalk from 'chalk';
-import { prompt } from 'inquirer';
 import GitOperate from '@lough/git-operate';
 import { Package } from '@lough/npm-operate';
+import chalk from 'chalk';
+import { prompt } from 'inquirer';
 import { startLoadingSpinner, succeedLoadingSpinner, succeedSpinner } from '../utils/spinner';
 
 const PACKAGE = '@lough/git-cli';

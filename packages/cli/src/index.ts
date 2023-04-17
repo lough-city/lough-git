@@ -1,16 +1,18 @@
 #!/usr/bin/env node
-import { program } from 'commander';
-import { join } from 'path';
-import { readFileSync } from 'fs';
-import init from './commands/init';
-import log from './commands/changelog';
+import { dirname, join } from 'path';
+import { fileURLToPath } from 'url';
 import { GIT_CHANGE_LOG_TYPE } from '@lough/git-changelog';
+import { Package } from '@lough/npm-operate';
+import { program } from 'commander';
+import log from './commands/changelog';
+import init from './commands/init';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
 
 function start() {
-  const jsonPath = join(__dirname, '../package.json');
-  const jsonContent = readFileSync(jsonPath, 'utf-8');
-  const jsonResult = JSON.parse(jsonContent);
-  program.version(jsonResult.version);
+  const npm = new Package({ dirName: join(__dirname, '..') });
+  program.version(npm.version);
 
   program.command(init.command).description(init.description).action(init.action);
 

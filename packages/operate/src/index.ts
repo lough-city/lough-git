@@ -1,7 +1,7 @@
 import execa from 'execa';
-import { existsGitConfigSync } from './utils';
-import { IGitOperateParameters } from './types';
 import GitLog from './log';
+import { IGitOperateParameters } from './types';
+import { existsGitConfigSync } from './utils';
 
 /**
  * Git 操作类

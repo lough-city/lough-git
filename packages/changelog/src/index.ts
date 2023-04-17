@@ -1,10 +1,10 @@
-import { Package } from '@lough/npm-operate';
 import GitOperate, { IGitLog, GIT_COMMIT_TYPE } from '@lough/git-operate';
+import { Package } from '@lough/npm-operate';
 import { RequiredOmit } from '@lyrical/types';
+import config from './config';
+import { GIT_CHANGE_LOG_TYPE } from './constants';
 import GitLogRender from './markdown';
 import { IGitChangeLogParameters } from './types';
-import { GIT_CHANGE_LOG_TYPE } from './constants';
-import config from './config';
 
 class GitChangeLog {
   private options = {} as RequiredOmit<IGitChangeLogParameters, 'tagFilter' | 'logFilter'>;

@@ -1,10 +1,10 @@
+import fs from 'fs';
+import path from 'path';
 import GitChangeLog, {
   GIT_CHANGE_LOG_CREATE_FILE_NAME,
   GIT_CHANGE_LOG_TYPE,
   GIT_CHANGE_LOG_TYPE_LABEL
 } from '@lough/git-changelog';
-import fs from 'fs';
-import path from 'path';
 import chalk from 'chalk';
 import { succeedSpinner, startLoadingSpinner, succeedLoadingSpinner } from '../utils/spinner';
 
